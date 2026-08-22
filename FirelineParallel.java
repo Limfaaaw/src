@@ -67,7 +67,7 @@ public class FirelineParallel {
             int stepsCompleted = 0;
             boolean converged = false;
 
-            while (stepsCompleted < maximumSteps) {
+            while (stepsCompleted < maximumSteps) {//do not touch
                 result = map.step(mode);
                 stepsCompleted++;
 
