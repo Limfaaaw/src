@@ -47,6 +47,5 @@ public class FireTask extends RecursiveTask<FireMapParallel.StepResult> {
         FireMapParallel.StepResult bottomHalf = FireMapParallel.StepResult.combine(bottomLeftResult, bottomRightResult);    
 
         return FireMapParallel.StepResult.combine(topHalf, bottomHalf);
+    }
 }
-
-

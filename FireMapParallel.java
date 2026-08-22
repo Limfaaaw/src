@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import java.util.concurrent.ForkJoinPool;
+
 /**
  * Stores the landscape and dynamic state for a deterministic heat-diffusion
  * and wildfire simulation.
@@ -16,6 +18,8 @@ import javax.imageio.ImageIO;
  * grid update. This double-buffered design is important for both correctness
  * and later parallelisation.
  */
+
+
 public class FireMapParallel {
 
     public enum Mode {
@@ -37,6 +41,7 @@ public class FireMapParallel {
         }
     }
 
+private final ForkJoinPool pool = ForkJoinPool.commonPool();
 
     public enum Landscape {
         MIXED,
@@ -184,8 +189,12 @@ public class FireMapParallel {
      */
     public final StepResult step(Mode mode) {
         prepareNextState();
-        StepResult result = updateRegion(
-                mode, 1, rows - 1, 1, columns - 1);
+
+        FireTask rootTask = new FireTask(this, mode, 1, rows - 1, 1, columns - 1);
+
+        pool.execute(rootTask);
+        StepResult result = rootTask.join();
+
         completeStep();
         return result;
     }
