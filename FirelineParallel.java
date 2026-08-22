@@ -14,7 +14,7 @@
  * Example:
  *   java FirelineSerial 300 300 42 wildfire output/fireline
  */
-public class FirelineSerial {
+public class FirelineParallel {
 
     private static final int DEFAULT_MAXIMUM_STEPS = 5_000;
     private static final double DEFAULT_TOLERANCE = 0.05;
@@ -29,7 +29,7 @@ public class FirelineSerial {
             int rows = parsePositiveInteger(args[0], "rows");
             int columns = parsePositiveInteger(args[1], "columns");
             long seed = Long.parseLong(args[2]);
-            FireMap.Mode mode = FireMap.Mode.fromString(args[3]);
+            FireMapParallel.Mode mode = FireMapParallel.Mode.fromString(args[3]);
             String outputPrefix = args[4].trim();
             int maximumSteps = args.length >= 6
                     ? parsePositiveInteger(args[5], "maximum steps")
@@ -37,9 +37,9 @@ public class FirelineSerial {
             double tolerance = args.length >= 7
                     ? parsePositiveDouble(args[6], "tolerance")
                     : DEFAULT_TOLERANCE;
-            FireMap.Landscape landscape = args.length >= 8
-                    ? FireMap.Landscape.fromString(args[7])
-                    : FireMap.Landscape.MIXED;
+            FireMapParallel.Landscape landscape = args.length >= 8
+                    ? FireMapParallel.Landscape.fromString(args[7])
+                    : FireMapParallel.Landscape.MIXED;
 
             Integer ignitionTopRow = null;
             Integer ignitionLeftColumn = null;
@@ -58,12 +58,12 @@ public class FirelineSerial {
                         "The output prefix may not be empty.");
             }
 
-            FireMap map = new FireMap(
+            FireMapParallel map = new FireMapParallel(
                     rows, columns, seed, mode, landscape,
                     ignitionTopRow, ignitionLeftColumn, ignitionPatchSize);
 
             long startTime = System.nanoTime();
-            FireMap.StepResult result = null;
+            FireMapParallel.StepResult result = null;
             int stepsCompleted = 0;
             boolean converged = false;
 
@@ -71,7 +71,7 @@ public class FirelineSerial {
                 result = map.step(mode);
                 stepsCompleted++;
 
-                if (mode == FireMap.Mode.WILDFIRE) {
+                if (mode == FireMapParallel.Mode.WILDFIRE) {
                     converged = result.getBurningCells() == 0
                             && result.getMaximumTemperatureChange() < tolerance;
                 } else {

@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  * grid update. This double-buffered design is important for both correctness
  * and later parallelisation.
  */
-public class FireMap {
+public class FireMapParallel {
 
     public enum Mode {
         DIFFUSION,
@@ -137,12 +137,12 @@ public class FireMap {
     private final double[][] peakTemperature;
     private String sourceDescription;
 
-    public FireMap(int rows, int columns, long seed, Mode mode) {
+    public FireMapParallel(int rows, int columns, long seed, Mode mode) {
         this(rows, columns, seed, mode, Landscape.MIXED,
                 null, null, null);
     }
 
-    public FireMap(int rows,
+    public FireMapParallel(int rows,
                    int columns,
                    long seed,
                    Mode mode,
