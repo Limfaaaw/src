@@ -1,7 +1,7 @@
 import java.util.concurrent.RecursiveTask;
 
 public class FireTask extends RecursiveTask<FireMapParallel.StepResult> {
-    private static final int CUTOFF = 128;
+    private static final int CUTOFF = 64;
 
     private final FireMapParallel map;
     private final FireMapParallel.Mode mode;
